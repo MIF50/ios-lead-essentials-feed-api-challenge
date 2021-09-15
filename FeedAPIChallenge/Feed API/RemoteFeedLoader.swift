@@ -33,7 +33,7 @@ public final class RemoteFeedLoader: FeedLoader {
 final class FeedImageMapper {
 	private struct Root: Decodable {
 		let items: [Item]
-		var feed: [FeedImage] {
+		var feeds: [FeedImage] {
 			return items.map { $0.item }
 		}
 	}
@@ -54,10 +54,10 @@ final class FeedImageMapper {
 
 	static func map(_ data: Data, from response: HTTPURLResponse) -> FeedLoader.Result {
 		guard response.statusCode == 200,
-		      let _ = try? JSONDecoder().decode(Root.self, from: data)
+		      let root = try? JSONDecoder().decode(Root.self, from: data)
 		else {
 			return .failure(RemoteFeedLoader.Error.invalidData)
 		}
-		return .success([])
+		return .success(root.feeds)
 	}
 }
