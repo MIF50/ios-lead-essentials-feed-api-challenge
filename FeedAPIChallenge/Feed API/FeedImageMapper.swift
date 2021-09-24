@@ -11,7 +11,7 @@ import Foundation
 enum FeedImageMapper {
 	private struct Root: Decodable {
 		let items: [Item]
-		var feeds: [FeedImage] {
+		var feed: [FeedImage] {
 			return items.map { $0.item }
 		}
 	}
@@ -36,6 +36,6 @@ enum FeedImageMapper {
 		else {
 			return .failure(RemoteFeedLoader.Error.invalidData)
 		}
-		return .success(root.feeds)
+		return .success(root.feed)
 	}
 }
